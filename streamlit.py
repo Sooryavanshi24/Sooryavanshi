@@ -1,10 +1,29 @@
+import time
+import numpy as np
+import pandas as pd
 import streamlit as st
-# Set the title of the app
-st.title("Welcome to My First Streamlit App")
 
-# Add a text input
-name = st.text_input("Enter your name:")
+_LOREM_IPSUM = """
+Lorem ipsum dolor sit amet, **consectetur adipiscing** elit, sed do eiusmod tempor
+incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis
+nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
+"""
 
-# Display the name entered by the user
-if name:
-    st.write(f"Hello, {name}! Welcome to the app.")
+
+def stream_data():
+    for word in _LOREM_IPSUM.split(" "):
+        yield word + " "
+        time.sleep(0.02)
+
+    yield pd.DataFrame(
+        np.random.randn(5, 10),
+        columns=["a", "b", "c", "d", "e", "f", "g", "h", "i", "j"],
+    )
+
+    for word in _LOREM_IPSUM.split(" "):
+        yield word + " "
+        time.sleep(0.02)
+
+
+if st.button("Stream data"):
+    st.write_stream(stream_data)
