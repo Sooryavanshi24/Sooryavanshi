@@ -1,16 +1,10 @@
-import os
 from langchain.chains import LLMChain
 from langchain.llms import OpenAI
 from langchain.prompts import PromptTemplate, ChatPromptTemplate
 import streamlit as st
 
-# Set your OpenAI API key from environment variable
-openai_api_key = os.getenv('OPENAI_API_KEY')
-if not openai_api_key:
-    st.error("OpenAI API key is not set. Please set the OPENAI_API_KEY environment variable.")
-    st.stop()
-
-llm = OpenAI(openai_api_key=openai_api_key)
+# Set your OpenAI API key
+llm = OpenAI(openai_api_key='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')
 
 # Define the prompt template for conversation
 prompt_template = ChatPromptTemplate.from_messages([
@@ -49,7 +43,7 @@ if user_input:
         # Display the response
         st.write(f"🌍 Careconnect: {bot_response}")
     except Exception as e:
-        st.write(f"An error occurred while processing your request: {e}")
+        st.write(f"An error occurred: {e}")
 else:
     st.write("Please enter a message to get a response.")
 
@@ -61,8 +55,5 @@ if __name__ == "__main__":
         if question.lower() == "exit":
             break
 
-        try:
-            answer = query_chain.run(data_description=data_description, question=question)
-            print(answer)
-        except Exception as e:
-            print(f"An error occurred while processing your query: {e}")
+        answer = query_chain.run(data_description=data_description, question=question)
+        print(answer)
